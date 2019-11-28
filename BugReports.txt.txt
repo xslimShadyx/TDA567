@@ -1,0 +1,16 @@
+Lines 23-24 and 26-27
+Assuming date format DD/MM the someMonth/someDay and laterMonth/laterDay are read wrong from the input arguments.
+Someday should be read from args[0]
+someMonth should be read from args[1]
+laterDay should be read from args[2]
+laterMonth should be read from args[3]
+
+
+daysinMonth: 
+*Line 13: methods first if statement should swap the 7 with 4.
+*Should also have another if-statement for february which only have 28 days. (assumed no leap year).
+
+Line 45/46: With our assumed date format (DD/MM) the printed values of days and month are the wrong order.
+
+Line 34: for loop should start on 1 and not 0. There is no month 0. Same goes for the for-loop on line 38.
+Line 49: daysbetween could be negative if the first date is after the second.

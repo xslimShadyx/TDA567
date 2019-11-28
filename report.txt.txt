@@ -1,0 +1,35 @@
+Task 1.
+Assumptions: 
+* All dates are within the same year
+* The difference between 1/1 and 2/1 should be 1.
+* The date is in format DD/MM
+
+test 1: Dates 1 1 1 2; expected: 31; result: 30
+test 2: Dates 32 1 30 2; expected: no such date error;  result: -987
+test 3: 1 1 2 1; expected: 1; result: 0
+
+Task 2:
+input: 1 2 3 4. (run Dates 1 2 3 4)
+Local variables:
+someMonth = 1
+someDay = 2
+laterMonth = 3
+laterDat = 4
+someDayInYear = 31
+laterDayInYear = 62
+aMonth = 3
+daysBetween =33
+
+Task 3:
+method name: daysInMonth
+lines: from 12-17.
+
+Task 4:
+Assuming date format DD/MM the someMonth/someDay and laterMonth/laterDay are read wrong from the input arguments.
+
+daysinMonth: 
+*methods first if statement should swap the 7 with 4.
+*should have another if statement for february which only have 28 days. (assumed no leap year).
+
+
+
