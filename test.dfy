@@ -9,7 +9,8 @@ class CircularMemory
 
   constructor Init(cap : int)
   //missing some pre-conditions here
-  ensures 0<=cap
+  ensures cap >=0;
+  requires cap >=0;
   {
     cells := new int[cap];
     read_position, write_position := 0, 0;
@@ -24,9 +25,9 @@ class CircularMemory
   {
 
   // Think of some constraints on: 
-    cell.Length>0
-    write_position < cell.Length && write_position >=0	
-   read_position < cell.Length && read_position >=0	
+    cells.Length>0 &&
+    write_position < cells.Length && write_position >=0 &&	
+   read_position < cells.Length && read_position >=0 
   }
 
 
@@ -41,40 +42,95 @@ class CircularMemory
   predicate isFull()
     reads this
   {
-  write_position == cell.Length-1
+  write_position == cells.Length-1
   }
 
  method Read() returns (isSuccess : bool, content : int)
     modifies this
-    requires Valid()
-    ensures  Valid()
-    ensures  isSuccess ==> ...
-    ensures !isSuccess ==> ...
+    requires Valid();
+    ensures  Valid();
+    ensures  isSuccess ==> content == old(cells[read_position]);
+    ensures !isSuccess ==> content==0 && read_position == old(read_position);
   {
-    if(isFlipped)
-    {
-            isSuccess :=true;
-            content := cell[read_position]
-            if(read_position==cell.Length-1){
-                read_position:=0;
-                isFlipped:=false;
-            }else{
-                read_position:=read_position + 1;
-            }
-        }
-    }
-    else // not flipped
-    {
-    if(read_position==write_position){
+    if(write_position==read_position){
        isSuccess := false;
         content := 0;
-    }else{
-        isSuccess := true ;
-        content := cell[read_position];
-        read_position := read_position +1;
     }
+    else{
+        isSuccess :=true;
+        content := cells[read_position];
+      if(isFlipped)
+        {
+            if(read_position == cells.Length-1){
+                read_position:=0;
+                isFlipped:=false;
+                
+            }
+            else
+             {
+             read_position := read_position+1;
+             
+                
+            }
+        }
+    
+    else
+    {
+      if(read_position <cells.Length-1){
+        read_position := read_position +1;
+      }
+      }
     }
   }
+  
+  method Write(input : int) returns (isSuccess : bool)
+    modifies this ,cells;
+    requires Valid()
+    ensures  Valid()
+    ensures  isSuccess ==> cells[ old(write_position) ] == input;
+    ensures !isSuccess ==> write_position == old(write_position)
+  {
+    if(read_position == write_position && cells[read_position]!=0)
+    {
+        isSuccess := false;
+    } 
+    else{
+      if(isFlipped)
+       {
+             if(write_position >= read_position){
+              isSuccess := false;
+           } 
+            else
+            {
+              cells[write_position]:= input;
+              write_position:=write_position+1;
+                isSuccess := true;
 
+            }
+        }
+      else 
+        {
+          if(write_position <= read_position){
+          isSuccess := false;
 
+        }else{
+            isSuccess:=true;
+            cells[write_position]:= input;
+          if(write_position==cells.Length-1){
+           
+            write_position:=0;
+            isFlipped:=true;          
+          }
+          else{
+   write_position:=write_position +1;
+          }
+       
+
+        }
+      
+      }
+    }
+  }
 }
+
+
