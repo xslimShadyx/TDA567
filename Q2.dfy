@@ -5,9 +5,8 @@ method ComputeFact(n : nat) returns (res : nat)
   res := 1;
   var i := 2;
   while (i <= n)
-  invariant i * res == fact(n) //res+i > n+i 
-  // fact(i) * res == fact(n) //res*i > (n *i) 
- decreases  n - i
+  invariant fact(i) == res * i && i-2 <n 
+   decreases  n - i
   {
     res := res * i;
     i := i + 1;
